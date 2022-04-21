@@ -1,33 +1,52 @@
-package vn.codegym.com.c0921g1_sprint2.model;
+package vn.codegym.com.c0921g1_sprint2.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.*;
-import java.util.List;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-@Entity
-@Table
-public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+public class MemberDTO implements Validator {
     private Long id;
+
+    @Pattern(message ="Tên phải đặt theo dạng VD : Nguyen Van A" ,regexp ="^([A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]+)( [A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]*)*$")
     private String name;
+
+    @NotBlank(message = "Không được để trống ô này !")
     private String dayOfBirth;
+
+    @NotBlank(message = "Không được để trống ô này !")
     private String address;
+
+    @Pattern(message ="Số điện thoại phải đúng định dạng VD : 09xxxxxxxx" ,regexp ="(84|0[3|5|7|8|9])+([0-9]{8})\\b")
     private String phoneNumber;
+
+    @NotNull(message = "Không được để trống ô này !")
     private Integer gender;
+
+    @NotBlank(message = "Không được để trống ô này !")
+    @Email(message = "Dữ liệu không hợp lệ! Email phải tuân theo chuẩn quy ước!")
     private String email;
+
+    @NotNull(message = "Không được để trống ô này !")
     private Long point;
+
+    @NotNull(message = "Không được để trống ô này !")
     private Integer lockFlag;
+
+    @NotNull(message = "Không được để trống ô này !")
     private Integer deleteFlag;
+
+    @NotNull(message = "Không được để trống ô này !")
     private Integer warning;
+
+    @NotNull(message = "Không được để trống ô này !")
     private Long totalMoney;
 
-    @OneToMany(mappedBy = "member")
-    @JsonBackReference(value = "transaction")
-    private List<Transaction> transactions;
-
-    public Member() {
+    public MemberDTO() {
     }
 
     public Long getId() {
@@ -118,19 +137,25 @@ public class Member {
         this.warning = warning;
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-
     public Long getTotalMoney() {
         return totalMoney;
     }
 
     public void setTotalMoney(Long totalMoney) {
         this.totalMoney = totalMoney;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return false;
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+    MemberDTO memberDTO = (MemberDTO) target;
+    String dateOfBirth = memberDTO.dayOfBirth;
+        if (RegexMember.checkAgeMember(dateOfBirth)) {
+            errors.rejectValue("dateOfBirth","dateOfBirth.age");
+        }
     }
 }
