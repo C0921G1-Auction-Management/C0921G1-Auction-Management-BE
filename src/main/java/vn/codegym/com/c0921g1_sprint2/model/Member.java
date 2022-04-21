@@ -1,5 +1,7 @@
 package vn.codegym.com.c0921g1_sprint2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,7 +24,11 @@ public class Member {
     private Long totalMoney;
 
     @OneToMany(mappedBy = "member")
+    @JsonBackReference(value = "transaction")
     private List<Transaction> transactions;
+
+    @ManyToMany(mappedBy = "members")
+    List<Auction> auctions;
 
     public Member() {
     }
@@ -130,4 +136,14 @@ public class Member {
     public void setTotalMoney(Long totalMoney) {
         this.totalMoney = totalMoney;
     }
+
+    public List<Auction> getAuctions() {
+        return auctions;
+    }
+
+    public void setAuctions(List<Auction> auctions) {
+        this.auctions = auctions;
+    }
+
+
 }
