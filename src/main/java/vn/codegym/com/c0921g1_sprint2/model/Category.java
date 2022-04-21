@@ -13,7 +13,8 @@ public class Category {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "category")
-    @JsonBackReference(value= "product")
+
+    @JsonBackReference(value = "product")
     private List<Product> products;
 
     public Long getId() {
@@ -39,4 +40,6 @@ public class Category {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
+
+
 }
