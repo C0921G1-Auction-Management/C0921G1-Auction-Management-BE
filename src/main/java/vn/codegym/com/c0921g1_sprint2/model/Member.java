@@ -24,7 +24,7 @@ public class Member {
     private Long totalMoney;
 
     @OneToMany(mappedBy = "member")
-    @JsonBackReference
+    @JsonBackReference(value = "transaction")
     private List<Transaction> transactions;
 
     @ManyToMany(mappedBy = "members")
@@ -144,4 +144,6 @@ public class Member {
     public void setAuctions(List<Auction> auctions) {
         this.auctions = auctions;
     }
+
+
 }

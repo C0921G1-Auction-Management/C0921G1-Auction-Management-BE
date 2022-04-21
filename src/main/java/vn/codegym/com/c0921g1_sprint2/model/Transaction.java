@@ -78,4 +78,6 @@ public class Transaction {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+
 }
