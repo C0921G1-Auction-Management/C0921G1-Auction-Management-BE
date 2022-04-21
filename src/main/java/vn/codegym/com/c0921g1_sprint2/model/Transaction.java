@@ -13,6 +13,7 @@ public class Transaction {
     private String transactionDate;
     private Integer behavior;
     private Integer status;
+    private Integer deleteFlag;
 
     @ManyToOne(targetEntity = Product.class)
     private Product product;
@@ -79,5 +80,11 @@ public class Transaction {
         this.status = status;
     }
 
+    public Integer getDeleteFlag() {
+        return deleteFlag;
+    }
 
+    public void setDeleteFlag(Integer deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
 }
