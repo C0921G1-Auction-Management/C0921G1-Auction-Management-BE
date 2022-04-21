@@ -1,6 +1,5 @@
 package vn.codegym.com.c0921g1_sprint2.dto;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import vn.codegym.com.c0921g1_sprint2.model.Category;
@@ -11,11 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class ProjectDTO implements Validator {
+public class ProjectDTOTaiLM implements Validator {
     @Pattern(message ="name actor must be correct for example: Nguyen Van A,..." ,regexp ="^([A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]+)( [A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]*)*$")
     private String name;
 
@@ -46,7 +43,7 @@ public class ProjectDTO implements Validator {
     @NotNull(message = "Vui lòng chọn")
     private Category category;
 
-    public ProjectDTO() {
+    public ProjectDTOTaiLM() {
     }
 
     public String getName() {
@@ -183,9 +180,9 @@ public class ProjectDTO implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ProjectDTO projectDTO = (ProjectDTO) target;
-        String startDate = projectDTO.startDate;
-        String endDate = projectDTO.endDate;
+        ProjectDTOTaiLM projectDTOTaiLM = (ProjectDTOTaiLM) target;
+        String startDate = projectDTOTaiLM.startDate;
+        String endDate = projectDTOTaiLM.endDate;
         if(!checkNgay(startDate,endDate)){
             errors.rejectValue("startDate","startDate.CheckDate","Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
         }
