@@ -24,6 +24,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Transaction> transactions;
 
+    @ManyToMany(mappedBy = "members")
+    List<Auction> auctions;
+
     public Member() {
     }
 
@@ -129,5 +132,13 @@ public class Member {
 
     public void setTotalMoney(Long totalMoney) {
         this.totalMoney = totalMoney;
+    }
+
+    public List<Auction> getAuctions() {
+        return auctions;
+    }
+
+    public void setAuctions(List<Auction> auctions) {
+        this.auctions = auctions;
     }
 }

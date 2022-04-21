@@ -29,6 +29,9 @@ public class Product {
     @ManyToOne(targetEntity = Category.class)
     private Category category;
 
+    @ManyToOne(targetEntity = Auction.class)
+    private Auction auction;
+
     public Product() {
     }
 
