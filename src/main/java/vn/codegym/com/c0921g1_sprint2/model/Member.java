@@ -1,5 +1,7 @@
 package vn.codegym.com.c0921g1_sprint2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class Member {
     private Integer deleteFlag;
     private Integer warning;
     private Long totalMoney;
+
 
     @OneToMany(mappedBy = "member")
     private List<Transaction> transactions;

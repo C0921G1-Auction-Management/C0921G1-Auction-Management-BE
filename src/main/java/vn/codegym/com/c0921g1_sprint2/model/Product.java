@@ -1,5 +1,7 @@
 package vn.codegym.com.c0921g1_sprint2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class Product {
     private Long startBid;
     private Long bidRange;
     private Long finalBid;
+
     @Column(name = "imageUrl", columnDefinition = "LONGBLOB")
     private String imageUrl;
     private String startDate;
@@ -23,9 +26,11 @@ public class Product {
     private String timeRemaining;
     private String productAddress;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<Transaction> transactions;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Category.class)
     private Category category;
 
