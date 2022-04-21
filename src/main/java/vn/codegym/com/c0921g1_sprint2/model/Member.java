@@ -1,5 +1,7 @@
 package vn.codegym.com.c0921g1_sprint2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class Member {
     private Long totalMoney;
 
     @OneToMany(mappedBy = "member")
+    @JsonBackReference
     private List<Transaction> transactions;
 
     @ManyToMany(mappedBy = "members")
