@@ -57,16 +57,16 @@ public class AuctionController_getPriceCurrentList {
 //        Assertions.assertEquals(404, responseEntity.getStatusCodeValue());
 //    }
 
-    //    Trường hợp cả 2 tham số productId bị rỗng, test sẽ bị lỗi compile nên comment lại để chạy chương trình, thực tế nếu productId
+    //    Trường hợp tham số productId bị rỗng, test sẽ bị lỗi compile nên comment lại để chạy chương trình, thực tế nếu productId
     //rỗng sẽ return 404
 //    @Test
 //    public void getPriceCurrentList_productId_8() {
 //        ResponseEntity<List<Integer>> responseEntity
-//                = this.auctionController.getPriceCurrentList("", "");
+//                = this.auctionController.getPriceCurrentList("", 5000);
 //        Assertions.assertEquals(404, responseEntity.getStatusCodeValue());
 //    }
 
-    //    Trường hợp cả 2 tham số price bị rỗng, test sẽ bị lỗi compile nên comment lại để chạy chương trình, thực tế nếu price
+    //    Trường hợp tham số price bị rỗng, test sẽ bị lỗi compile nên comment lại để chạy chương trình, thực tế nếu price
     //rỗng sẽ return 404
 //    @Test
 //    public void getPriceCurrentList_price_8() {
