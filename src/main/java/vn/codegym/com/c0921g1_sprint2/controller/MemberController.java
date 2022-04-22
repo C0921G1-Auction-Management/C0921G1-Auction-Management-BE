@@ -24,13 +24,16 @@ public class MemberController {
 
     //get list member NhanNT
     @GetMapping("/member/list")
-    public ResponseEntity<Iterable<MemberDTONhanNT>> getTradingHistory(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Iterable<MemberDTONhanNT>> getListMember(@RequestParam(defaultValue = "0") Integer page,
                                                                        @RequestParam(defaultValue = "") Long memberID,
                                                                        @RequestParam(defaultValue = "") String memberName,
                                                                        @RequestParam(defaultValue = "") String memberAddress,
                                                                        @RequestParam(defaultValue = "") String memberEmail,
-                                                                       @RequestParam(defaultValue = "0") int memberRank){
+                                                                       @RequestParam(defaultValue = "0") Integer memberRank){
 
+        if (page == null||memberID==null||memberName == null||memberAddress == null||memberEmail==null||memberRank==null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         Pageable pageable = PageRequest.of(page, 5);
         Page<MemberDTONhanNT> memberDTOList = memberService.getListMember(memberID,memberName,memberAddress,memberEmail,memberRank,pageable);
 
@@ -43,26 +46,18 @@ public class MemberController {
     @GetMapping("/member/lock")
     public ResponseEntity<?> lockMember(@RequestParam(defaultValue = "") String listMember){
 
+        if (listMember == null||listMember.equals("") ){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         List<Member> memberList = memberService.findByIdMember(listMember);
         if (memberList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{
-            memberService.lockMember(listMember);
+            memberService.lockMember(memberList);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
     }
-//    //TaiLM xóa phim
-//    @GetMapping("delete/{id}")
-//    public ResponseEntity<?> delete(@PathVariable Integer id) {
-//        Optional<Film> filmOptional = filmService.findByIdFilm(id);
-//
-//        if (filmOptional.isPresent()) {
-//            filmService.deleteFilm(filmOptional.get().getId());
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//
-//    }
+
 }

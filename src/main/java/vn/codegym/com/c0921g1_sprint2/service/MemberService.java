@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface MemberService {
 
     Page<MemberDTONhanNT> getListMember(Long id, String name, String address, String email, int rank, Pageable pageable);
-    void lockMember(String id);
+    void lockMember(List<Member> members);
     List<Member> findByIdMember(String id);
 }

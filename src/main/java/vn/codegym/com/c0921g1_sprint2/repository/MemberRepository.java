@@ -29,6 +29,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "update member\n" +
             "set lock_flag =1\n" +
             "where id = ?1", nativeQuery = true)
-    void lockMember(Integer id);
+    void lockMember(Long id);
 
 }

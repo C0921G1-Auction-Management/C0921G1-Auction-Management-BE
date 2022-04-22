@@ -8,6 +8,7 @@ public class C0921g1Sprint2Application {
 
     public static void main(String[] args) {
         SpringApplication.run(C0921g1Sprint2Application.class, args);
+
     }
 
 }

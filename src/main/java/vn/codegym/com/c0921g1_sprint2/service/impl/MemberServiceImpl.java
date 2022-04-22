@@ -53,11 +53,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void lockMember(String id) {
-        String[] parts = id.split(",");
-        for (int i = 0; i < parts.length; i++) {
+    public void lockMember(List<Member> members) {
+//        String[] parts = members.split(",");
+        for (int i = 0; i < members.size(); i++) {
 //            System.out.println(parts[i]);
-            memberRepository.lockMember(Integer.parseInt(parts[i]));
+            memberRepository.lockMember(members.get(i).getId());
         }
     }
 
