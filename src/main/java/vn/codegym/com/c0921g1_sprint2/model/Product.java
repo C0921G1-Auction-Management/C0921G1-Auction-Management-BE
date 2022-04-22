@@ -12,9 +12,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Long startBid;
-    private Long bidRange;
-    private Long finalBid;
+    private Integer startBid;
+    private Integer bidRange;
+    private Integer finalBid;
     @Column(name = "imageUrl", columnDefinition = "LONGBLOB")
     private String imageUrl;
     private String startDate;
@@ -33,7 +33,7 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
-    @JsonBackReference(value = "product")
+    @JsonBackReference(value = "product_auctions")
     private List<Auction> auctions;
 
     public Product() {
@@ -55,27 +55,27 @@ public class Product {
         this.name = name;
     }
 
-    public Long getStartBid() {
+    public Integer getStartBid() {
         return startBid;
     }
 
-    public void setStartBid(Long startBid) {
+    public void setStartBid(Integer startBid) {
         this.startBid = startBid;
     }
 
-    public Long getBidRange() {
+    public Integer getBidRange() {
         return bidRange;
     }
 
-    public void setBidRange(Long bidRange) {
+    public void setBidRange(Integer bidRange) {
         this.bidRange = bidRange;
     }
 
-    public Long getFinalBid() {
+    public Integer getFinalBid() {
         return finalBid;
     }
 
-    public void setFinalBid(Long finalBid) {
+    public void setFinalBid(Integer finalBid) {
         this.finalBid = finalBid;
     }
 

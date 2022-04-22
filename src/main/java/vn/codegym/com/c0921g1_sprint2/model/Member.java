@@ -17,18 +17,19 @@ public class Member {
     private String phoneNumber;
     private Integer gender;
     private String email;
-    private Long point;
+    private Integer point;
     private Integer lockFlag;
     private Integer deleteFlag;
     private Integer warning;
-    private Long totalMoney;
+    private Integer totalMoney;
 
     @OneToMany(mappedBy = "member")
     @JsonBackReference(value = "transaction")
     private List<Transaction> transactions;
 
-    @ManyToMany(mappedBy = "members")
-    List<Auction> auctions;
+    @OneToMany(mappedBy = "members")
+    @JsonBackReference(value = "members_auction")
+    private List<Auction> auctions;
 
     public Member() {
     }
@@ -89,14 +90,6 @@ public class Member {
         this.email = email;
     }
 
-    public Long getPoint() {
-        return point;
-    }
-
-    public void setPoint(Long point) {
-        this.point = point;
-    }
-
     public Integer getLockFlag() {
         return lockFlag;
     }
@@ -129,11 +122,19 @@ public class Member {
         this.transactions = transactions;
     }
 
-    public Long getTotalMoney() {
+    public Integer getPoint() {
+        return point;
+    }
+
+    public void setPoint(Integer point) {
+        this.point = point;
+    }
+
+    public Integer getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(Long totalMoney) {
+    public void setTotalMoney(Integer totalMoney) {
         this.totalMoney = totalMoney;
     }
 

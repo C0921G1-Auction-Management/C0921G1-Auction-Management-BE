@@ -1,22 +1,20 @@
-package vn.codegym.com.c0921g1_sprint2.model;
+package vn.codegym.com.c0921g1_sprint2.dto;
 
-import javax.persistence.*;
+import vn.codegym.com.c0921g1_sprint2.model.Member;
+import vn.codegym.com.c0921g1_sprint2.model.Product;
 
-@Entity
-@Table
-public class Auction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+import javax.persistence.ManyToOne;
+
+public class AuctionDto {
     private Long id;
-    @ManyToOne (targetEntity = Member.class)
+    @ManyToOne(targetEntity = Member.class)
     private Member members;
     @ManyToOne (targetEntity = Product.class)
     private Product product;
-    private Integer currentBid;
-    private Integer quantity;
+    private Long currentBid;
     private String auctionTime;
 
-    public Auction() {
+    public AuctionDto() {
     }
 
     public Long getId() {
@@ -43,11 +41,11 @@ public class Auction {
         this.product = product;
     }
 
-    public Integer getCurrentBid() {
+    public Long getCurrentBid() {
         return currentBid;
     }
 
-    public void setCurrentBid(Integer currentBid) {
+    public void setCurrentBid(Long currentBid) {
         this.currentBid = currentBid;
     }
 
@@ -57,13 +55,5 @@ public class Auction {
 
     public void setAuctionTime(String auctionTime) {
         this.auctionTime = auctionTime;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 }
