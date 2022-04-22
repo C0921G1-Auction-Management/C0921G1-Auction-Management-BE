@@ -12,8 +12,6 @@ public class Transaction {
     private Long currrentBid;
     private String transactionDate;
     private Integer behavior;
-    private Integer status;
-    private Integer deleteFlag;
 
     @ManyToOne(targetEntity = Product.class)
     private Product product;
@@ -72,19 +70,5 @@ public class Transaction {
         this.behavior = behavior;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
+    
 }

@@ -1,6 +1,6 @@
 package vn.codegym.com.c0921g1_sprint2.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import vn.codegym.com.c0921g1_sprint2.model.security.Account;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,11 +24,14 @@ public class Member {
     private Long totalMoney;
 
     @OneToMany(mappedBy = "member")
-    @JsonBackReference(value = "transaction")
     private List<Transaction> transactions;
 
     @ManyToMany(mappedBy = "members")
     List<Auction> auctions;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     public Member() {
     }
@@ -145,5 +148,11 @@ public class Member {
         this.auctions = auctions;
     }
 
+    public Account getAccount() {
+        return account;
+    }
 
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }

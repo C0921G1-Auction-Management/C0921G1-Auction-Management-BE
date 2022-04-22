@@ -12,8 +12,8 @@ public class Auction {
     @ManyToMany
     @JoinTable (name = "auction_member", joinColumns = @JoinColumn(name = "auction_id"), inverseJoinColumns = @JoinColumn(name = "member_id"))
     private List<Member> members;
-    @ManyToOne (targetEntity = Product.class)
-    private Product product;
+    @OneToMany (mappedBy = "auction")
+    private List<Product> products;
     private Long currentBid;
 
     public Auction() {
@@ -35,12 +35,12 @@ public class Auction {
         this.members = members;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public Long getCurrentBid() {

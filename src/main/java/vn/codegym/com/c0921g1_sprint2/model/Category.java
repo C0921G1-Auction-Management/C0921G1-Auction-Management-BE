@@ -1,7 +1,5 @@
 package vn.codegym.com.c0921g1_sprint2.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,7 +11,6 @@ public class Category {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "category")
-    @JsonBackReference(value = "product")
     private List<Product> products;
 
     public Long getId() {
@@ -39,6 +36,4 @@ public class Category {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
-
-
 }
