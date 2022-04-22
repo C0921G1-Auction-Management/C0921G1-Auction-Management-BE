@@ -18,6 +18,7 @@ import vn.codegym.com.c0921g1_sprint2.service.impl.AuctionServiceImpl;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,40 +37,54 @@ public class AuctionController {
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Product product = auctionService.getProductById(id);
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(product, HttpStatus.OK);
-        }
+      try{
+          if (product == null) {
+              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+          } else {
+              return new ResponseEntity<>(product, HttpStatus.OK);
+          }
+      }catch (NullPointerException e){
+          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
     }
 
     //    lấy danh sách giá để chọn giá đấu
     @GetMapping("/list-current-price")
-    public ResponseEntity<List<Integer>> priceCurrentList(Long productId, Integer price) {
+    public ResponseEntity<List<Integer>> getPriceCurrentList(Long productId, Integer price) {
         Product product = auctionService.getProductById(productId);
         List<Integer> priceCurrentList = new ArrayList<>();
         Integer currentPrice;
 
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+      try{
+          if (product == null) {
+              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+          }
 
-        if (price == null) {
-            currentPrice = product.getStartBid();
-        } else {
-            currentPrice = price;
-        }
+          if (price == null) {
+              currentPrice = product.getStartBid();
+          } else {
+              currentPrice = price;
+          }
 
-        for (int i = 0; i < 15; i++) {
-            currentPrice += product.getBidRange();
-            priceCurrentList.add(currentPrice);
-        }
+          for (int i = 0; i < 15; i++) {
+              currentPrice += product.getBidRange();
+              if (i == 0 && price == null){
+                  currentPrice = product.getStartBid();
+              }
+              priceCurrentList.add(currentPrice);
+          }
+      }catch (Exception e){
+          return new ResponseEntity<>(priceCurrentList, HttpStatus.NOT_FOUND);
+      }
         return new ResponseEntity<>(priceCurrentList, HttpStatus.OK);
     }
 
     //    lưu thông tin đấu giá xuống database
     @PostMapping("/save-info-auction")
-    public ResponseEntity<?> saveInformationOfAuction(@RequestBody AuctionDto auctionDto) {
+    public ResponseEntity<?> saveInformationOfAuction(@Valid @RequestBody AuctionDto auctionDto) {
+        if (auctionDto == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Auction auction = new Auction();
         BeanUtils.copyProperties(auctionDto, auction);
         auctionService.saveInfoAuction(auction.getProduct().getId(), auction.getMembers().getId(), auction.getCurrentBid(), auction.getQuantity(), auction.getAuctionTime());
@@ -123,5 +138,9 @@ public class AuctionController {
                 "<p>Quantity: " + auction.getQuantity() + "</p>\n" +
                 "<p>Time: " + auction.getAuctionTime() + "</p>", true);
         javaMailSender.send(message);
+        System.out.println("hello em");
     }
+
+
+
 }

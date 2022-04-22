@@ -1,18 +1,21 @@
 package vn.codegym.com.c0921g1_sprint2.dto;
 
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import vn.codegym.com.c0921g1_sprint2.model.Member;
 import vn.codegym.com.c0921g1_sprint2.model.Product;
 
-import javax.persistence.ManyToOne;
 
-public class AuctionDto {
+import javax.validation.constraints.NotNull;
+
+public class AuctionDto implements Validator {
+    @NotNull
     private Long id;
-    @ManyToOne(targetEntity = Member.class)
-    private Member members;
-    @ManyToOne (targetEntity = Product.class)
-    private Product product;
-    private Long currentBid;
+    private Integer currentBid;
+    private Integer quantity;
     private String auctionTime;
+    private Member members;
+    private Product product;
 
     public AuctionDto() {
     }
@@ -41,12 +44,20 @@ public class AuctionDto {
         this.product = product;
     }
 
-    public Long getCurrentBid() {
+    public Integer getCurrentBid() {
         return currentBid;
     }
 
-    public void setCurrentBid(Long currentBid) {
+    public void setCurrentBid(Integer currentBid) {
         this.currentBid = currentBid;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public String getAuctionTime() {
@@ -55,5 +66,15 @@ public class AuctionDto {
 
     public void setAuctionTime(String auctionTime) {
         this.auctionTime = auctionTime;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return false;
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+
     }
 }
