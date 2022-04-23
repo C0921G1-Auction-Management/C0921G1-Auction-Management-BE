@@ -8,15 +8,18 @@ import java.util.List;
 @Entity
 @Table
 public class Member {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String dayOfBirth;
-    private String address;
-    private String phoneNumber;
-    private Integer gender;
-    private String email;
+    private String name;            //
+    private String dayOfBirth;      //
+    private String address;         //
+    private String phoneNumber;     //
+    private Integer gender;         //
+    private String email;           //
+    private String identityNumber;  //
+
     private Long point;
     private Integer lockFlag;
     private Integer deleteFlag;
@@ -154,5 +157,13 @@ public class Member {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
     }
 }

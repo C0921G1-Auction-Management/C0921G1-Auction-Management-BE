@@ -55,15 +55,15 @@ public class SecurityController {
 
         Account account = accountService.findAccountByUsername(loginRequest.getUsername());
 //        Member member = memberService.findMemberById(account.getId().toString()).get();
-//        Member member = memberService.findMemberByAccount(account.getId()).get();
-
-        return ResponseEntity.ok(
-                new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles)
-        );
+        Member member = memberService.findMemberByAccount(account.getId()).get();
 
 //        return ResponseEntity.ok(
-//                new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, member)
+//                new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles)
 //        );
+
+        return ResponseEntity.ok(
+                new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, member)
+        );
 
     }
 
