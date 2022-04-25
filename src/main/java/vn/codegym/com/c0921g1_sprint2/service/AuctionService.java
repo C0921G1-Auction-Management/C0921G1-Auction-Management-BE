@@ -9,7 +9,7 @@ import vn.codegym.com.c0921g1_sprint2.model.Product;
 public interface AuctionService {
      Auction findAllEndAuction();
 
-    Page<Auction> findAll(Pageable pageable);
+    Page<Auction> findAll(Long productId,Pageable pageable);
 
     Product getProductById(Long id);
 

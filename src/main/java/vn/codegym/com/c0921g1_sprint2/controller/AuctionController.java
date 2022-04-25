@@ -27,12 +27,12 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("/c09/user/auction")
 public class AuctionController {
+
     @Autowired
     JavaMailSender javaMailSender;
 
     @Autowired
     AuctionService auctionService;
-
 
     //    lấy thông tin chi tiết sản phẩm
     @GetMapping("/product/{id}")
@@ -105,10 +105,11 @@ public class AuctionController {
     //    lấy danh sách thông tin đấu giá của sản phẩm đang đấu giá
     @GetMapping("/get-info-auction")
     public ResponseEntity<Page<Auction>> getInformationAuction(@RequestParam(defaultValue = "0") Integer page,
-                                                               @RequestParam(defaultValue = "0") Integer seeMore) {
+                                                               @RequestParam(defaultValue = "0") Integer seeMore,
+                                                               Long productId) {
         try {
             Pageable pageable = PageRequest.of(page, seeMore);
-            Page<Auction> listAuction = auctionService.findAll(pageable);
+            Page<Auction> listAuction = auctionService.findAll(productId ,pageable);
             if (listAuction.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {

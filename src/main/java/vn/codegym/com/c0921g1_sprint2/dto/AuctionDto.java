@@ -8,12 +8,11 @@ import vn.codegym.com.c0921g1_sprint2.model.Auction;
 import vn.codegym.com.c0921g1_sprint2.model.Member;
 import vn.codegym.com.c0921g1_sprint2.model.Product;
 import vn.codegym.com.c0921g1_sprint2.repository.AuctionRepository;
-
-
 import javax.validation.constraints.NotNull;
 
 @Component
 public class AuctionDto implements Validator {
+
     @Autowired
     AuctionRepository auctionRepository;
 

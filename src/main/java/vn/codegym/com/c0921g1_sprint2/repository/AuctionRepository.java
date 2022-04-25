@@ -14,8 +14,8 @@ import javax.transaction.Transactional;
 @Transactional
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
-    @Query(value = "select * from auction", nativeQuery =true)
-    Page<Auction> findAllAuction(Pageable pageable);
+    @Query(value = "select * from auction where auction.product_id = ?1", nativeQuery =true)
+    Page<Auction> findAllAuction(Long productId,Pageable pageable);
 
     @Modifying
     @Query(value = "insert into auction values (?1,?2,?3,?4,?5)", nativeQuery = true)
