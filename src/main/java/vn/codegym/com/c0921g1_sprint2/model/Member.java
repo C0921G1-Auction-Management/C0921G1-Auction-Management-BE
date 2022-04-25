@@ -24,6 +24,7 @@ public class Member {
     private Long totalMoney;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Transaction> transactions;
 

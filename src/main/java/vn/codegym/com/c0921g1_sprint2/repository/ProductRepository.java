@@ -25,4 +25,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                     " where member.id = :memberId and payment_status = 1 ",
             nativeQuery = true)
     Page<Product> getProductListByMemberId(@Param("memberId") Long memberId, Pageable page);
+
+
+    //LongTK
+    @Query(value = "SELECT * FROM product \n" +
+            " join transaction on transaction.product_id = product.id\n" +
+            " join member on transaction.member_id = member.id\n" +
+            " where member.id = :memberId and payment_status = 1 ",
+            countQuery = "SELECT count(*) FROM product \n" +
+                    " join transaction on transaction.product_id = product.id\n" +
+                    " join member on transaction.member_id = member.id\n" +
+                    " where member.id = :memberId and payment_status = 1 ",
+            nativeQuery = true)
+    List<Product> findAllProdByMemberId(@Param("memberId") Long memberId);
 }

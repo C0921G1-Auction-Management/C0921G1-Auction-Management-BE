@@ -34,10 +34,10 @@ public class PaymentCotrollerLongTK {
 
 
     //LongTK
-    //lấy ra danh sách sản phẩm đã đấu giá thành công theo member id
+    //lấy ra danh sách sản phẩm đã đấu giá thành công theo member id có phân trang
     @GetMapping("productList/{id}")
-    public ResponseEntity<Page<Product>> getProductByid(@PathVariable Long id,
-                                                        @RequestParam int pageNo) {
+    public ResponseEntity<Page<Product>> getProductOfMember(@PathVariable Long id,
+                                                            @RequestParam int pageNo) {
 
         System.out.println("is member present? = 0" + memberService.findById(id).isPresent());
 
@@ -53,18 +53,44 @@ public class PaymentCotrollerLongTK {
     }
 
     //LongTK
+    //lấy ra danh sách sản phẩm đã đấu giá thành công theo member id. dạng lít
+    @GetMapping("findAllProduct/{id}")
+    public ResponseEntity<List<Product>> findAllProdByMemberId(@PathVariable Long id) {
+        List<Product> productList = productService.findAllByMemberId(id);
+        //trả về kết quả
+        if (productList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(productList, HttpStatus.OK);
+        }
+    }
+
+    //LongTK lấy ra giá tiề từng sản phẩm
     @GetMapping("getPrice/{id}")
     public ResponseEntity<Long> getPrice(@PathVariable Long id) {
         Long price = transactionService.findPriceByProductId(id);
         if (!(price > 0)) {
-            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
-        } else return new ResponseEntity<>(price,HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(price, HttpStatus.OK);
     }
 
+    //LongTK tìm member theo id
+    @GetMapping("findMemer/{id}")
+    public ResponseEntity<Member> findMemberById(@PathVariable Long id) {
+        Optional<Member> foundMem = memberService.findById(id);
+        if (foundMem.isPresent()) {
+            return new ResponseEntity<>(foundMem.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
+    //LongTK gửi mail
     @GetMapping("sendmail")
     private void send(@RequestParam String to,
-                      @RequestParam Long total) {
-        String sub = "Đấu giá thành công";
+                      @RequestParam Long totalPrice,
+                      @RequestParam String listProduct) {
+        String sub = "Đấu giá thành công!";
         String user = "c0921g1.sprint@gmail.com";
         String pass = "123456@b";
         String msg = "<!DOCTYPE html>\n" +
@@ -81,7 +107,8 @@ public class PaymentCotrollerLongTK {
                 "  Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi\n" +
                 "</p>\n" +
                 "<p><strong>\n" +
-                "  Tổng giá:" + total + "\n" +
+                "  Tổng giá:" + totalPrice + "\n" + "\n" +
+                listProduct + "\n" +
                 "</strong></p>\n" +
                 "<p>\n" +
                 "  Thời gian dự kiến giao hàng là khoảng 15 ngày kể từ khi bạn nhận được mail này\n" +
@@ -95,13 +122,6 @@ public class PaymentCotrollerLongTK {
                 "</html>\n";
         //create an instance of Properties Class
         Properties props = new Properties();
-
-        /* Specifies the IP address of your default mail server
-     	   for e.g if you are using gmail server as an email sever
-           you will pass smtp.gmail.com as value of mail.smtp host.
-           As shown here in the code.
-           Change accordingly, if your email id is not a gmail id
-         */
         props.put("mail.smtp.host", "smtp.gmail.com");
         //below mentioned mail.smtp.port is optional
         props.put("mail.smtp.port", "587");
@@ -119,10 +139,6 @@ public class PaymentCotrollerLongTK {
         });
 
         try {
-
-            /* Create an instance of MimeMessage,
- 	      it accept MIME types and headers
-             */
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
 
@@ -130,13 +146,12 @@ public class PaymentCotrollerLongTK {
             message.setSubject(sub);
             message.setContent(msg, "text/html");
 
-            /* Transport class is used to deliver the message to the recipients */
             Transport.send(message);
-
         } catch (MessagingException e) {
             e.printStackTrace();
         }
     }
+
 }
 
 
