@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import vn.codegym.com.c0921g1_sprint2.dto.ProjectDTOTaiLM;
+import vn.codegym.com.c0921g1_sprint2.dto.ProductDTOTaiLM;
 import vn.codegym.com.c0921g1_sprint2.model.Product;
 import vn.codegym.com.c0921g1_sprint2.service.ProductService;
 
@@ -20,14 +20,14 @@ public class ProductController {
     ProductService productService;
 
     @PostMapping("register")
-    public ResponseEntity<?> registerProduct(@RequestBody @Valid ProjectDTOTaiLM projectDTOTaiLM,
+    public ResponseEntity<?> registerProduct(@RequestBody @Valid ProductDTOTaiLM productDTOTaiLM,
                                              BindingResult bindingResult){
-        new ProjectDTOTaiLM().validate(projectDTOTaiLM,bindingResult);
+        new ProductDTOTaiLM().validate(productDTOTaiLM,bindingResult);
         if (bindingResult.hasErrors()){
             return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.BAD_REQUEST);
         }else {
             Product product =new Product();
-            BeanUtils.copyProperties(projectDTOTaiLM,product);
+            BeanUtils.copyProperties(productDTOTaiLM,product);
             productService.saveProduct(product);
             return new ResponseEntity<>(HttpStatus.OK);
         }

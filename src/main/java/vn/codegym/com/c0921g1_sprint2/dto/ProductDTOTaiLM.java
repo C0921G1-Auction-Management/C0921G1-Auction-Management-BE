@@ -1,23 +1,24 @@
 package vn.codegym.com.c0921g1_sprint2.dto;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import vn.codegym.com.c0921g1_sprint2.model.Category;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ProjectDTOTaiLM implements Validator {
-    @Pattern(message ="name actor must be correct for example: Nguyen Van A,..." ,regexp ="^([A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]+)( [A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]*)*$")
+public class ProductDTOTaiLM implements Validator {
+    @Pattern(message ="Tên không được chứa ký tự đặc biệt" ,regexp ="^([A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]+)( [A-ZĐ\\d][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]*)*$")
+    @Length(max = 30,message = "Tên không quá 30 ký tự")
+    @NotBlank
     private String name;
 
     @Min(value = 5000,message = "Giá khởi đầu không không được nhỏ hơn 5.000 đồng")
     @NotNull(message = "Vui lòng chọn")
+    @Max(value=5000000,message = "Giá khởi đầu không quá 5.000.000 đ")
     private Long startBid;
 
     @NotNull(message = "Vui lòng chọn")
@@ -25,15 +26,19 @@ public class ProjectDTOTaiLM implements Validator {
     private Long bidRange;
 
     @Min(value = 1000,message = "Giá trị không đúng")
-    @NotNull(message = "Vui lòng chọn")
+    @Max(value = 10000000,message = "Giá trị không quá 10.000.000 đ")
     private Long finalBid;
+
     @NotBlank(message = "Vui lòng chọn")
+    @Length(min = 5,message = "Không đúng định dạng")
+    @Length(min = 5000,message = "Không quá 1000 ký tự")
     private String imageUrl;
 
     private String startDate;
     private String endDate;
     private Integer approvedStatus;
     @NotBlank(message = "Vui lòng không để trống")
+    @Length(min=10, max=150, message="Ký tự trong khoảng 10-150")
     private String description;
 
     private Integer paymentStatus;
@@ -43,7 +48,7 @@ public class ProjectDTOTaiLM implements Validator {
     @NotNull(message = "Vui lòng chọn")
     private Category category;
 
-    public ProjectDTOTaiLM() {
+    public ProductDTOTaiLM() {
     }
 
     public String getName() {
@@ -159,7 +164,6 @@ public class ProjectDTOTaiLM implements Validator {
         try {
             ngayBatDau = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startDate);
             ngayKetThuc = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(endDate);
-            localDateTime = new Date("yyyy-MM-dd HH:mm:ss");
         } catch (ParseException e) {
             flag = false;
         }
@@ -180,10 +184,10 @@ public class ProjectDTOTaiLM implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ProjectDTOTaiLM projectDTOTaiLM = (ProjectDTOTaiLM) target;
-        String startDate = projectDTOTaiLM.startDate;
-        String endDate = projectDTOTaiLM.endDate;
-        if(!checkNgay(startDate,endDate)){
+        ProductDTOTaiLM productDTOTaiLM = (ProductDTOTaiLM) target;
+        String startDate = productDTOTaiLM.startDate;
+        String endDate = productDTOTaiLM.endDate;
+        if(checkNgay(startDate,endDate)){
             errors.rejectValue("startDate","startDate.CheckDate","Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
         }
     }

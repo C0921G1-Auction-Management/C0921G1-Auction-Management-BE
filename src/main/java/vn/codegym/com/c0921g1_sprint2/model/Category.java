@@ -16,6 +16,9 @@ public class Category {
     @JsonBackReference(value = "product")
     private List<Product> products;
 
+    public Category() {
+    }
+
     public Long getId() {
         return id;
     }
