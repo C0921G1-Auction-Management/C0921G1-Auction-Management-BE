@@ -1,18 +1,17 @@
 package vn.codegym.com.c0921g1_sprint2.dto;
 
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 public class MemberDTO implements Validator {
     private Long id;
 
     @Pattern(message ="Tên phải đặt theo dạng VD : Nguyen Van A" ,regexp ="^([A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]+)( [A-ZĐ][a-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]*)*$")
+    @Length(min = 3, max = 50)
     private String name;
 
     @NotBlank(message = "Không được để trống ô này !")

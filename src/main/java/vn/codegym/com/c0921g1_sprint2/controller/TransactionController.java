@@ -31,9 +31,9 @@ public class TransactionController {
         Pageable pageable1 = PageRequest.of(pageable, 10);
 
         Page<Transaction> transactionsListFilter = transactionService.findAllTransaction(member_sell, member_buy, name_product, total_money, status, pageable1);
-//        if (transactionsListSearch.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
+        if (transactionsListFilter.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(transactionsListFilter, HttpStatus.OK);
     }
 
