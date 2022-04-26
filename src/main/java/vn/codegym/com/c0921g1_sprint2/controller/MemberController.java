@@ -25,7 +25,7 @@ public class MemberController {
     private MemberService memberService;
 
     //create member - KhanhLDQ
-    @PostMapping(value = "/public/member", consumes = "application/json", produces = "application/json")
+        @PostMapping(value = "/public/member", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> createMember(
             @Validated @RequestBody MemberDTO memberDTO,
             BindingResult bindingResult) {
