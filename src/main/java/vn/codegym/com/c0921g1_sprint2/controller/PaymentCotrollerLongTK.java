@@ -13,6 +13,17 @@ import vn.codegym.com.c0921g1_sprint2.service.MemberService;
 import vn.codegym.com.c0921g1_sprint2.service.ProductService;
 import vn.codegym.com.c0921g1_sprint2.service.TransactionService;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+
+import java.nio.file.Path;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import javax.mail.*;
@@ -24,13 +35,13 @@ import java.util.Properties;
 @RequestMapping("payment")
 public class PaymentCotrollerLongTK {
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
 
     //LongTK
@@ -82,40 +93,44 @@ public class PaymentCotrollerLongTK {
             return new ResponseEntity<>(foundMem.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
 
     //LongTK gửi mail
     @GetMapping("sendmail")
     private void send(@RequestParam String to,
-                      @RequestParam Long totalPrice,
-                      @RequestParam String listProduct) {
-        String sub = "Đấu giá thành công!";
+                      @RequestParam String totalPrice,
+                      @RequestParam String quantity,
+                      @RequestParam String deliveryNote) {
+        String sub = "Payment for auction products";
         String user = "c0921g1.sprint@gmail.com";
         String pass = "123456@b";
+
+
         String msg = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
-                "  <meta charset=\"UTF-8\">\n" +
-                "  <title>Title</title>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Title</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "<h3>\n" +
-                "  THANH TOÁN THÀNH CÔNG\n" +
-                "</h3>\n" +
-                "<p style=\"color: red\">\n" +
-                "  Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi\n" +
+                "<h3> Complete payment </h3>\n" +
+                "<p>Thank you for using our service</p>\n" +
+                "  <strong> \n" +
+                "    Total\n" + totalPrice + " $" +
+                "  </strong>\n" +
+
+                "  <strong> \n" +
+                "    Product quantity\n" + quantity +
+                "  </strong>\n" +
+
+                "<p style=\"font-style: italic\">\n" +
+                "Delivery note: " + deliveryNote +
                 "</p>\n" +
-                "<p><strong>\n" +
-                "  Tổng giá:" + totalPrice + "\n" + "\n" +
-                listProduct + "\n" +
-                "</strong></p>\n" +
-                "<p>\n" +
-                "  Thời gian dự kiến giao hàng là khoảng 15 ngày kể từ khi bạn nhận được mail này\n" +
-                "</p>\n" +
+
+                "<p>The product will be delivered within 15 days from the time you receive this mail</p>\n" +
                 "\n" +
                 "<p style=\"font-style: italic\">\n" +
-                "  Trân trọng!\n" +
+                "  Best regards!\n" +
                 "</p>\n" +
                 "\n" +
                 "</body>\n" +
@@ -140,12 +155,13 @@ public class PaymentCotrollerLongTK {
 
         try {
             MimeMessage message = new MimeMessage(session);
+//            message.setHeader("Content-Type", "text/plain; charset=UTF-8");
+            message.setHeader("Content-Type", "text/plain; charset=UTF-8");
             message.setFrom(new InternetAddress(user));
-
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(sub);
+            message.setSubject(sub, "utf-8");
             message.setContent(msg, "text/html");
-
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
