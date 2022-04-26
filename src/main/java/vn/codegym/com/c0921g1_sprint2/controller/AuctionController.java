@@ -132,6 +132,17 @@ public class AuctionController {
 
     }
 
+    @GetMapping("/get-info-winner-temp")
+    public ResponseEntity<Auction> getInfoWinnerTempAuction() {
+        try{
+            Auction auction = auctionService.findAllEndAuction();
+            return new ResponseEntity<>(auction,HttpStatus.OK);
+        }catch (NullPointerException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     void sendMail(Auction auction) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
 
