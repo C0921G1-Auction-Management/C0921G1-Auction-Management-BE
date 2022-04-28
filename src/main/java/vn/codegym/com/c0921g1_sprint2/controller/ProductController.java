@@ -24,8 +24,10 @@ public class ProductController {
                                              BindingResult bindingResult){
         new ProductDTOTaiLM().validate(productDTOTaiLM,bindingResult);
         if (bindingResult.hasErrors()){
+            System.out.println(bindingResult.getAllErrors());
             return new ResponseEntity<>(bindingResult.getAllErrors(),HttpStatus.BAD_REQUEST);
         }else {
+
             Product product =new Product();
             BeanUtils.copyProperties(productDTOTaiLM,product);
             productService.saveProduct(product);

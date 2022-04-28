@@ -25,13 +25,13 @@ public class ProductDTOTaiLM implements Validator {
     @Min(value = 5000,message = "Giá khởi đầu không không được nhỏ hơn 5.000 đồng")
     private Long bidRange;
 
-    @Min(value = 1000,message = "Giá trị không đúng")
-    @Max(value = 10000000,message = "Giá trị không quá 10.000.000 đ")
+    @Min(value = 50000,message = "Giá trị phải lớn hơn 50.000đ")
+    @NotNull(message = "Vui lòng không để trống")
     private Long finalBid;
 
-    @NotBlank(message = "Vui lòng chọn")
+    @NotBlank(message = "Vui lòng chọn tệp")
     @Length(min = 5,message = "Không đúng định dạng")
-    @Length(min = 5000,message = "Không quá 1000 ký tự")
+    @Length(max = 2000,message = "Không quá 2000 ký tự")
     private String imageUrl;
 
     private String startDate;
@@ -157,8 +157,8 @@ public class ProductDTOTaiLM implements Validator {
 
     public static Boolean checkNgay(String startDate, String endDate) {
         boolean flag;
-        Date ngayBatDau = null;
-        Date ngayKetThuc = null;
+        Date ngayBatDau = new Date();
+        Date ngayKetThuc = new Date();
         Date localDateTime = new Date();
 
         try {
@@ -169,7 +169,7 @@ public class ProductDTOTaiLM implements Validator {
         }
         if (ngayBatDau.after(localDateTime)){
             flag =false;
-        } else if (ngayBatDau.compareTo(ngayKetThuc) >= 0) {
+        } else if (ngayBatDau.compareTo(ngayKetThuc) > 0) {
             flag = false;
         } else {
             flag = true;
@@ -187,7 +187,7 @@ public class ProductDTOTaiLM implements Validator {
         ProductDTOTaiLM productDTOTaiLM = (ProductDTOTaiLM) target;
         String startDate = productDTOTaiLM.startDate;
         String endDate = productDTOTaiLM.endDate;
-        if(checkNgay(startDate,endDate)){
+        if(!checkNgay(startDate,endDate)){
             errors.rejectValue("startDate","startDate.CheckDate","Ngày bắt đầu phải nhỏ hơn ngày kết thúc");
         }
     }
