@@ -13,17 +13,7 @@ import vn.codegym.com.c0921g1_sprint2.service.MemberService;
 import vn.codegym.com.c0921g1_sprint2.service.ProductService;
 import vn.codegym.com.c0921g1_sprint2.service.TransactionService;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
-
-import java.nio.file.Path;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 import javax.mail.*;
@@ -59,6 +49,7 @@ public class PaymentCotrollerLongTK {
         if (productList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
+
             return new ResponseEntity<>(productList, HttpStatus.OK);
         }
     }
@@ -72,11 +63,12 @@ public class PaymentCotrollerLongTK {
         if (productList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
+
             return new ResponseEntity<>(productList, HttpStatus.OK);
         }
     }
 
-    //LongTK lấy ra giá tiề từng sản phẩm
+    //LongTK lấy ra giá tiền từng sản phẩm
     @GetMapping("getPrice/{id}")
     public ResponseEntity<Long> getPrice(@PathVariable Long id) {
         Long price = transactionService.findPriceByProductId(id);
@@ -95,6 +87,16 @@ public class PaymentCotrollerLongTK {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("changeStatus")
+    public ResponseEntity<?> changeProductStatus(@RequestParam String proList) {
+        List<Long> idList = productService.changePaymentStatusId(proList);
+        for (Long id : idList) {
+            productService.changePaymentStatus(id);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
     //LongTK gửi mail
     @GetMapping("sendmail")
     private void send(@RequestParam String to,
@@ -104,7 +106,6 @@ public class PaymentCotrollerLongTK {
         String sub = "Payment for auction products";
         String user = "c0921g1.sprint@gmail.com";
         String pass = "123456@b";
-
 
         String msg = "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +

@@ -3,12 +3,14 @@ package vn.codegym.com.c0921g1_sprint2.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.codegym.com.c0921g1_sprint2.model.Product;
 
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -38,4 +40,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                     " where member.id = :memberId and payment_status = 1 ",
             nativeQuery = true)
     List<Product> findAllProdByMemberId(@Param("memberId") Long memberId);
+
+
+    //LongTK
+    @Transactional
+    @Modifying
+    @Query(value = " UPDATE product SET payment_status = 2 WHERE id = :productId ",
+            nativeQuery = true)
+    void changePaymentStatus(@Param("productId") Long productId);
+
+
+
+//    UPDATE product SET payment_status = 2 WHERE id = 2 OR id = 4 OR id = 6;
 }

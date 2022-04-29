@@ -8,6 +8,8 @@ import vn.codegym.com.c0921g1_sprint2.model.Product;
 import vn.codegym.com.c0921g1_sprint2.repository.ProductRepository;
 import vn.codegym.com.c0921g1_sprint2.service.ProductService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,4 +35,30 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findAllByMemberId(Long id) {
         return productRepository.findAllProdByMemberId(id);
     }
+
+
+    @Override
+    public List<Long> changePaymentStatusId(String idList) {
+        System.out.println(idList);
+        List<Long> longId = new ArrayList<>();
+        List<String> myList = new ArrayList<String>(Arrays.asList(idList.split(",")));
+        for (String id : myList) {
+            try {
+                Long addId = Long.parseLong(id);
+                longId.add(addId);
+            } catch (Exception e) {
+                System.out.println("co loi tai: " + id + " " + e);
+            }
+        }
+        return longId;
+    }
+
+    @Override
+    public void changePaymentStatus(long id) {
+        productRepository.changePaymentStatus(id);
+    }
+
+
+//    changePaymentStatus
+
 }

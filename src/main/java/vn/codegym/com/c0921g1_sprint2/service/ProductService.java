@@ -17,4 +17,10 @@ public interface ProductService {
 
     //LongTK
     List<Product> findAllByMemberId(Long id);
+
+    //LongTK
+    List<Long> changePaymentStatusId(String condition);
+
+    //LongTK
+    void changePaymentStatus(long id);
 }
