@@ -2,6 +2,9 @@ package vn.codegym.com.c0921g1_sprint2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -28,11 +31,16 @@ public class Product {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
+    @JsonBackReference(value = "transaction")
     private List<Transaction> transactions;
 
     @JsonIgnore
     @ManyToOne(targetEntity = Category.class)
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    @JsonBackReference(value = "product")
+    private List<Auction> auctions;
 
     public Product() {
     }
@@ -157,5 +165,11 @@ public class Product {
         this.category = category;
     }
 
+    public List<Auction> getAuctions() {
+        return auctions;
+    }
 
+    public void setAuctions(List<Auction> auctions) {
+        this.auctions = auctions;
+    }
 }
